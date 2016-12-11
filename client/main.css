@@ -1,0 +1,91 @@
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;
+}
+
+body { 
+    font: 13px Helvetica, Arial; 
+    background: #2980b9;
+}
+
+/** form **/
+form {
+    background: #555;
+    padding: 3px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+form input {
+    border: 0;
+    padding: 10px;
+    width: 90%;
+    margin-right: .5%;
+}
+
+form button { 
+    cursor: pointer;
+    width: 9%;
+    background: #2980b9;
+    border: none;
+    padding: 10px;
+}
+
+.app {
+    width: 100%;
+    margin-top: 10%;
+}
+
+.app ul {
+    padding:0;
+    list-style-type:none;
+    display: flex;
+    justify-content: center;
+}
+
+.app li {
+    margin-left:2px;
+}
+
+.app ul li a {
+    display:block;
+    float:left;   
+    width:250px;
+    background-color:orange;
+    color:black;
+    text-decoration:none;
+    text-align:center;
+    margin: 10px;
+    padding:15px;
+    font-size: 15px;
+    font-weight: bold;
+    border:3px solid gray;
+}
+
+/** message **/
+#messages { 
+    list-style-type: none;
+    margin: 0;
+    margin-bottom: 80px;
+    padding: 0;
+    overflow-wrap: break-word;
+}
+
+#messages li { 
+    padding: 5px 10px;
+}
+
+#messages li .username {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#messages li:nth-child(odd) {
+    background: #eee;
+}
+
+#messages li:nth-child(even) {
+    background: #AAA;
+}
