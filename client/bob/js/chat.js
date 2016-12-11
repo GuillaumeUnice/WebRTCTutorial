@@ -2,7 +2,7 @@ $('form').submit(function(){
 	var content = $('#m').val();
 	if(content) {
 		var msg = {
-			username: 'Alice',
+			username: 'Bob',
 			content: content
 		}
 	socket.emit('CHAT_MESSAGE', msg);

@@ -12,6 +12,6 @@ $('form').submit(function(){
 });
 
 socket.on('CHAT_MESSAGE', function(msg){
-	console.log(JSON.parse(msg));
-    $('#messages').append('<li><span class="username">' + msg.username + ': </span><span class="content">' + msg.content + '</span></li>');
+	var msg = JSON.parse(msg);
+  $('#messages').append('<li><span class="username">' + msg.username + ': </span><span class="content">' + msg.content + '</span></li>');
 });
