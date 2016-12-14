@@ -9,10 +9,19 @@
     <form action="">
       <input id="m" placeholder="Your message here" autocomplete="off" />
       <button id="m_submit" type="submit">Send</button>
-      <!--<button id="web_rtc_button">Accept visio</button>-->
+
+      <!--<video id="video" controls height="136" width="328" autoplay></video>-->
+      <video id="localVideo" autoplay></video>
+      <!--<audio autoplay id="localVideo"></audio>-->
     </form>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+
+    <!--<script src="http://webrtc.github.io/adapter/adapter-latest.js"></script>-->
+    <!--<script src="https://raw.githubusercontent.com/addyosmani/getUserMedia.js/gh-pages/dist/getUserMedia.min.js"></script>-->
+
+    <script src="https://cdn.temasys.com.sg/adapterjs/0.11.x/adapter.debug.js"></script>
 
     <script src="./js/socket.js"></script>
     <script src="./js/chat.js"></script>
