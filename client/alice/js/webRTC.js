@@ -1,6 +1,7 @@
 (function () {
   'use strict';
 
+	var video = document.getElementById('screenSharingVideo');
 	////////////////////////////////////////////////////////////
 
 		/**
@@ -25,6 +26,20 @@
 			}
 		}
 
+	/**
+   * @name gotRemoteStream
+   * @description
+   * private fonction to add (bob's) remote stream
+   *
+   * @params {Object} bob's stream 
+   * @returns {void}
+   */
+	function gotRemoteStream(evt) {
+		console.log('gotRemoteStream');
+		console.log(evt.stream);
+  		video = attachMediaStream(video, evt.stream);
+	};
+
 	////////////////////////////////////////////////////////////
 	
 	$('#web_rtc_button').click(function(){
@@ -33,16 +48,18 @@
 			// ask authorization for use video and audio
 			navigator.getUserMedia({
 				audio: true,
-				video: true
-			}, function(advisorStream) {
+				video: false
+			}, function(aliceStream) {
 
 				aliceConn = getBrowserRTCConnectionObj();
 
 				// TODO remove
 				// reactor.dispatchEvent('webRTCDataChannel', 'param1');
 
-				aliceConn.addStream(advisorStream);
-
+				aliceConn.addStream(aliceStream);
+				
+				// display bob's screensharing
+				aliceConn.onaddstream = gotRemoteStream;
 				// envoie un ice candidate à l'autre pair
 				// 2 points a noté :
 				//   -le premier pas de stringify en préscence d'AdapterJS

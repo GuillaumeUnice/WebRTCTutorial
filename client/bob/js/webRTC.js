@@ -109,7 +109,7 @@
    * @returns {void}
    */
 		function gotRemoteStream(evt) {
-      video = attachMediaStream(video, evt.stream);
+      //video = attachMediaStream(video, evt.stream);
 
 			// Before AdapterJS
 			//  window.stream = evt.stream;
@@ -164,8 +164,7 @@
    */
 	$('form').on('click', '#web_rtc_button', function(){
 
-
-			// AdapterJS.webRTCReady(function(isUsingPlugin) {
+		// AdapterJS.webRTCReady(function(isUsingPlugin) {
 
     // The WebRTC API is ready.
     // isUsingPlugin: true if the WebRTC plugin is being used, false otherwise
@@ -174,13 +173,14 @@
 
 			// console.log(isUsingPlugin);
 
+			// restriction when you use screen sharing you cant's use audio in parallel
 			navigator.getUserMedia({
 				audio: true,
-				video: false
+				video: true
 			}, function(myStream) {
 				window.localStream = myStream;
 
-				// video = attachMediaStream(video, myStream);
+				video = attachMediaStream(video, myStream);
 				// event to send bob's iceCandaide to alice
 				bobConn.onicecandidate = sentIceCandidates;
 
