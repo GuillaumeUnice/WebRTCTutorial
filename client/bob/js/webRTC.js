@@ -2,10 +2,28 @@
     'use strict';
 
 		var aliceTempDesc = {};
+		var aliceTempIceCandidates = [];
+		
 		var bobConn = {};
-		var isAcceptedOffer = false;
-		var video = document.getElementById('localVideo');
-		var tab = [];
+		// var isAcceptedOffer = false;
+		
+		var video = document.getElementById('remoteVideo');
+		var form = document.getElementById('chat_form');
+
+		var button = document.createElement("button");
+		button.setAttribute("id", "web_rtc_button");
+  	button.innerHTML = "Accept visio";
+		
+		toggleVideo();
+
+   function toggleVideo () {
+		 if(video.style.display === '' || video.style.display === 'block') {
+			 video.style.display = 'none';
+		 } else {
+			 video.style.display = 'block';
+		 }
+   }
+
 	/**
    * @name getBrowserRTCConnectionObj
    * @description
@@ -37,7 +55,7 @@
 	 * and evovle RTCSessionDescription from alice's offer to state's answer
 	 * For this send bob description
    *
-   * @params {Object} Wich contains all description/configuration to etablish a PeerConnection 
+   * @params {Object} Wich contains all description/configuration to et ablish a PeerConnection 
    * @returns {void}
    */
 		function gotDescription(bobDesc) {
@@ -61,9 +79,9 @@
    * @returns {void}
    */
 		function registerIceCandidate() {
-			for(var i = 0; i < tab.length; i++) {
+			for(var i = 0; i < aliceTempIceCandidates.length; i++) {
 				bobConn.addIceCandidate(
-					new RTCIceCandidate(tab[i]), function() {
+					new RTCIceCandidate(aliceTempIceCandidates[i]), function() {
 					console.log('AddIceCandidate success!');
 				}, function(err) {
 					console.error('Error AddIceCandidate');
@@ -71,7 +89,6 @@
 				});
 			}
 		}
-
 
 	/**
    * @name sentIceCandidates
@@ -109,7 +126,7 @@
    * @returns {void}
    */
 		function gotRemoteStream(evt) {
-      //video = attachMediaStream(video, evt.stream);
+      video = attachMediaStream(video, evt.stream);
 
 			// Before AdapterJS
 			//  window.stream = evt.stream;
@@ -162,7 +179,8 @@
    *
    * @returns {void}
    */
-	$('form').on('click', '#web_rtc_button', function(){
+	button.onclick = function() {
+	// $('form').on('click', '#web_rtc_button', function(){
 
 		// AdapterJS.webRTCReady(function(isUsingPlugin) {
 
@@ -176,11 +194,12 @@
 			// restriction when you use screen sharing you cant's use audio in parallel
 			navigator.getUserMedia({
 				audio: true,
-				video: true
+				video: false
 			}, function(myStream) {
-				window.localStream = myStream;
 
-				video = attachMediaStream(video, myStream);
+				bobConn.addStream(myStream);
+
+				// video = attachMediaStream(video, myStream);
 				// event to send bob's iceCandaide to alice
 				bobConn.onicecandidate = sentIceCandidates;
 
@@ -196,12 +215,14 @@
 					new RTCSessionDescription(aliceTempDesc),
 					function() {
 						bobConn.createAnswer(gotDescription, displayError);
+						toggleVideo();
 				}, displayError);
 		
 			}, displayError);
 		
+	}
+	// });
 
-	});
 	/**
 	 * @name close
 	 * @description
@@ -225,7 +246,7 @@
 	 * @returns {void}
 	 */
 		socket.on('CANDIDATE_WEB_RTC_ALICE', function(candidate){
-			tab.push(candidate.candidate);
+			aliceTempIceCandidates.push(candidate.candidate);
 			// var candidate = JSON.parse(candidate);
 			// if(isAcceptedOffer) {
 			// 	console.log('cela marche');
@@ -249,7 +270,8 @@
 	 */
 	socket.on('ASK_WEB_RTC', function(aliceDesc){
 		aliceTempDesc = JSON.parse(aliceDesc);
-		$('form').append('<button id="web_rtc_button">Accept visio</button>');
+		form.appendChild(button); 
+		// $('form').append('<button id="web_rtc_button">Accept visio</button>');
 	});
 
 }) ();

@@ -48,9 +48,8 @@
 			// ask authorization for use video and audio
 			navigator.getUserMedia({
 				audio: true,
-				video: false
+				video: true
 			}, function(aliceStream) {
-
 				aliceConn = getBrowserRTCConnectionObj();
 
 				// TODO remove
@@ -100,7 +99,6 @@
 	// });
 
 	function close () {
-
 			if(aliceConn) {
 					aliceConn.close();
 			}
@@ -118,14 +116,13 @@
 				// var candidate = JSON.parse(candidate);
 
 				console.log('CANDIDATE_WEB_RTC_BOB');
-				aliceConn.addIceCandidate(
-					new RTCIceCandidate(candidate.candidate)
-				, function() {
-					console.log('AddIceCandidate success!');
-				}, function(err) {
-					console.error('Error AddIceCandidate');
-					console.error(err);
-				});
+				aliceConn.addIceCandidate( new RTCIceCandidate(candidate.candidate),
+					function() {
+						console.log('AddIceCandidate success!');
+					}, function(err) {
+						console.error('Error AddIceCandidate');
+						console.error(err);
+					});
 			});
 
 			socket.on('RESPONSE_WEB_RTC', function(bobDesc){
@@ -133,5 +130,4 @@
 				aliceConn.setRemoteDescription(new RTCSessionDescription(bobDesc));
 			});
 			
-
 }) ();
