@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-	var video = document.getElementById('screenSharingVideo');
+	var video = document.getElementById('remoteVideo');
 	////////////////////////////////////////////////////////////
 
 		/**

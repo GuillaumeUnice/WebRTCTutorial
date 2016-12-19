@@ -5,13 +5,14 @@
     <link rel="stylesheet" type="text/css" href="./../main.css">
   </head>
   <body>
+    
     <ul id="messages"></ul>
     <form action="">
       <input id="m" placeholder="Your message here" autocomplete="off" />
       <button id="m_submit" type="submit">Send</button>
       <button id="web_rtc_button">Make visio</button>
       
-      <video id="screenSharingVideo" autoplay></video>
+      <audio id="remoteVideo" controls autoplay></audio>
     </form>
     <!--<form>
         <input type="file" id="fileInput" />
@@ -24,6 +25,7 @@
 <!--
     <script src="https://cdn.temasys.com.sg/adapterjs/0.11.x/adapter.debug.js"></script>-->
   <script src="https://cdn.temasys.com.sg/adapterjs/0.13.x/adapter.debug.js"></script>
+    <script src="https://cdn.temasys.com.sg/adapterjs/0.13.x/adapter.screenshare.js"></script>
     <script src="./js/socket.js"></script>
     <script src="./js/chat.js"></script>
     <script src="./js/webRTC.js"></script>

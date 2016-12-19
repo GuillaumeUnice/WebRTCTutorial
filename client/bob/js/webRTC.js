@@ -8,21 +8,14 @@
 		// var isAcceptedOffer = false;
 		
 		var video = document.getElementById('remoteVideo');
-		var form = document.getElementById('chat_form');
-
-		var button = document.createElement("button");
-		button.setAttribute("id", "web_rtc_button");
-  	button.innerHTML = "Accept visio";
-		
-		toggleVideo();
-
-   function toggleVideo () {
-		 if(video.style.display === '' || video.style.display === 'block') {
-			 video.style.display = 'none';
-		 } else {
-			 video.style.display = 'block';
-		 }
-   }
+	 	toggleVideo();
+		function toggleVideo () {
+			if(video.style.display === '' || video.style.display === 'block') {
+				video.style.display = 'none';
+			} else {
+				video.style.display = 'block';
+			}
+		}
 
 	/**
    * @name getBrowserRTCConnectionObj
@@ -179,17 +172,14 @@
    *
    * @returns {void}
    */
-	button.onclick = function() {
-	// $('form').on('click', '#web_rtc_button', function(){
+	
+	$('form').on('click', '#web_rtc_button', function(){
 
-		// AdapterJS.webRTCReady(function(isUsingPlugin) {
-
-    // The WebRTC API is ready.
+		// The WebRTC API is ready.
     // isUsingPlugin: true if the WebRTC plugin is being used, false otherwise
-  
+		// AdapterJS.webRTCReady(function(isUsingPlugin) {
+ 
 			bobConn = getBrowserRTCConnectionObj();
-
-			// console.log(isUsingPlugin);
 
 			// restriction when you use screen sharing you cant's use audio in parallel
 			navigator.getUserMedia({
@@ -219,9 +209,7 @@
 				}, displayError);
 		
 			}, displayError);
-		
-	}
-	// });
+	});
 
 	/**
 	 * @name close
@@ -270,8 +258,7 @@
 	 */
 	socket.on('ASK_WEB_RTC', function(aliceDesc){
 		aliceTempDesc = JSON.parse(aliceDesc);
-		form.appendChild(button); 
-		// $('form').append('<button id="web_rtc_button">Accept visio</button>');
+		$('form').append('<button id="web_rtc_button">Accept visio</button>');
 	});
 
 }) ();

@@ -9,6 +9,13 @@ body {
     background: #2980b9;
 }
 
+/** audio & video **/
+audio, video {
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
 /** form **/
 form {
     background: #555;
