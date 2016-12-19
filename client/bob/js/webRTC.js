@@ -183,8 +183,10 @@
 
 			// restriction when you use screen sharing you cant's use audio in parallel
 			navigator.getUserMedia({
-				audio: true,
-				video: false
+				audio: false,
+				video: {
+					mediaSource: 'screen'	
+				}
 			}, function(myStream) {
 
 				bobConn.addStream(myStream);

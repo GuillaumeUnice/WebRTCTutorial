@@ -2,6 +2,15 @@
   'use strict';
 
 	var video = document.getElementById('remoteVideo');
+	toggleVideo();
+	function toggleVideo () {
+		if(video.style.display === '' || video.style.display === 'block') {
+			video.style.display = 'none';
+		} else {
+			video.style.display = 'block';
+		}
+	}
+
 	////////////////////////////////////////////////////////////
 
 		/**
@@ -128,6 +137,7 @@
 			socket.on('RESPONSE_WEB_RTC', function(bobDesc){
 				var bobDesc = bobDesc;
 				aliceConn.setRemoteDescription(new RTCSessionDescription(bobDesc));
+				toggleVideo();
 			});
 			
 }) ();
