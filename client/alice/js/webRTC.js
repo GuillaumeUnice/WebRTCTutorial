@@ -61,8 +61,7 @@
 			}, function(aliceStream) {
 				aliceConn = getBrowserRTCConnectionObj();
 
-				// TODO remove
-				// reactor.dispatchEvent('webRTCDataChannel', 'param1');
+				reactor.dispatchEvent('webRTCDataChannel', 'param1');
 
 				aliceConn.addStream(aliceStream);
 				

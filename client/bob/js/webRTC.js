@@ -6,7 +6,10 @@
 		
 		var bobConn = {};
 		// var isAcceptedOffer = false;
-		
+
+		var receiveChannel = {};
+		var downloadAnchor = document.querySelector('a#download');
+
 		var video = document.getElementById('remoteVideo');
 	 	toggleVideo();
 		function toggleVideo () {
@@ -143,14 +146,43 @@
 		console.error(error);
 	}
 
-	//TODO Remove
-	// function receiveChannelCallback(event) {
-	// 	console.log('Receive Channel Callback');
-	// 	console.log(event.channel);
-		// receiveChannel = event.channel;
-		// receiveChannel.binaryType = 'arraybuffer';
-		// receiveChannel.onmessage = onReceiveMessageCallback;
-		// receiveChannel.onopen = onReceiveChannelStateChange;
+	function onReceiveMessageCallback (event) {
+		console.log('onReceiveMessageCallback', event);
+
+			// var received = new window.Blob(event.data);
+			var receivedTxt = event.data;
+			console.log(receivedTxt);
+			var test = new Blob([receivedTxt]);
+
+			// downloadAnchor.href = URL.createObjectURL(received);
+			downloadAnchor.href = URL.createObjectURL(test);
+			downloadAnchor.download = 'lol.mp3';
+			downloadAnchor.textContent =
+			'Click to download \'lol.txt\' (12 bytes)';
+			downloadAnchor.style.display = 'block';
+
+	
+	}
+
+
+
+	function onReceiveChannelStateChange(test) {
+		console.log('test', test);
+		var state = receiveChannel.readyState;
+		if (state === 'open') {
+			console.log('receiveChannel Opened');
+		} else {
+			console.log('onReceiveChannelStateChange', state);
+		}
+	}
+
+	function receiveChannelCallback(event) {
+		console.log('Receive Channel Callback');
+		console.log(event.channel);
+		receiveChannel = event.channel;
+		receiveChannel.binaryType = 'arraybuffer';
+		receiveChannel.onmessage = onReceiveMessageCallback;
+		receiveChannel.onopen = onReceiveChannelStateChange;
 		// receiveChannel.onclose = onReceiveChannelStateChange;
 
 		// receivedSize = 0;
@@ -161,7 +193,9 @@
 		// 	URL.revokeObjectURL(downloadAnchor.href);
 		// 	downloadAnchor.removeAttribute('href');
 		// }
-	// }
+	}
+
+
 	/////////////////////////////////////////////////////////////////////
   
 	
@@ -199,8 +233,7 @@
 				bobConn.onaddstream = gotRemoteStream;
 				// bobConn.ontrack = gotRemoteStream;
 
-				// TODO remove
-				// bobConn.ondatachannel = receiveChannelCallback;
+				bobConn.ondatachannel = receiveChannelCallback;
 
 				// add alice's description
 				bobConn.setRemoteDescription(
@@ -223,6 +256,11 @@
 	function close () {
 		if(bobConn) {
 			bobConn.close();
+		}
+		if (receiveChannel) {
+			receiveChannel.close();
+			console.log('Closed data channel with label: ' + receiveChannel.label);
+			receiveChannel = null;
 		}
 		bobConn = null;
 	}
