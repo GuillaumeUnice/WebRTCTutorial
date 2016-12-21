@@ -100,3 +100,14 @@ form #web_rtc_button {
 #messages li:nth-child(even) {
     background: #AAA;
 }
+
+#fileDownload {
+    display: none;
+    position: fixed;
+    right: 0px;
+    width: 300px;
+    height: 30px;
+    top: 225px;
+    text-align: center;
+    background-color: #eee;
+}

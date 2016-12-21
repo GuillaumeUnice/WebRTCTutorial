@@ -146,28 +146,38 @@
 		console.error(error);
 	}
 
+	var receiveBuffer = [];
+	var file = null;
+	var currentChunk = 0;
 	function onReceiveMessageCallback (event) {
-		console.log('onReceiveMessageCallback', event);
+		if(!file) {
+			file = JSON.parse(event.data);
+			console.log('FILE INFO', file);
+		} else {
+			currentChunk++;
+			receiveBuffer.push(event.data);
+			
+			if(file.numberMax === (currentChunk+1)) {
+				var received = new window.Blob(receiveBuffer);
 
-			// var received = new window.Blob(event.data);
-			var receivedTxt = event.data;
-			console.log(receivedTxt);
-			var test = new Blob([receivedTxt]);
+				downloadAnchor.href = URL.createObjectURL(received);
+				downloadAnchor.download = file.fileName;
+				downloadAnchor.textContent = file.fileName;
+				
+				var fileDownload = document.getElementById('fileDownload');
+				fileDownload.style.display = 'block';
+				downloadAnchor.style.display = 'block';
 
-			// downloadAnchor.href = URL.createObjectURL(received);
-			downloadAnchor.href = URL.createObjectURL(test);
-			downloadAnchor.download = 'lol.mp3';
-			downloadAnchor.textContent =
-			'Click to download \'lol.txt\' (12 bytes)';
-			downloadAnchor.style.display = 'block';
-
-	
+				currentChunk = 0;
+				file = null;
+				receiveBuffer = [];
+			}
+		}
 	}
 
 
 
-	function onReceiveChannelStateChange(test) {
-		console.log('test', test);
+	function onReceiveChannelStateChange(event) {
 		var state = receiveChannel.readyState;
 		if (state === 'open') {
 			console.log('receiveChannel Opened');

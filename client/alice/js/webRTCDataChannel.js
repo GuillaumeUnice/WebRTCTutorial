@@ -4,45 +4,36 @@
 	var fileInput = document.querySelector('input#fileInput');
 
 	$('form').on('change', '#fileInput', function() {
-			var reader = new FileReader();
 
-			// reader.addEventListener('load', function() {
-			//     console.log('Contenu du fichier "' + fileInput.files[0].name + '" :\n\n' + reader.result);
-			// });
 
-			reader.onload = (function() {
-				if(sendChannel) {
-					// console.log(reader.result);
-					sendChannel.send(reader.result);
+		var file = this.files[0];
+		var chunkSize = 16384;
+		var maxNumberOfChunk = Math.ceil(file.size / chunkSize);
+		var currentNumberOfChunk = 0;
+
+		var message = {
+			type: 'file_info',
+			number: ++currentNumberOfChunk,
+			numberMax: maxNumberOfChunk,
+			fileName: file.name
+		}
+		sendChannel.send(JSON.stringify(message));
+
+		var sliceFile = function(offset) {
+			var reader = new window.FileReader();
+
+			var slice = file.slice(offset, offset + chunkSize);
+			reader.readAsArrayBuffer(slice);
+
+			reader.onload = function(event) {
+				sendChannel.send(event.target.result);
+				if (maxNumberOfChunk > ++currentNumberOfChunk) {
+					console.log('Chunk number : ', currentNumberOfChunk);
+					sliceFile(offset + chunkSize);
 				}
-			});
-
-			reader.readAsText(this.files[0]);
-
-
-
-
-
-
-
-
-
-//   var chunkSize = 16384;
-//   var sliceFile = function(offset) {
-//     var reader = new window.FileReader();
-//     reader.onload = (function() {
-//       return function(e) {
-//         sendChannel.send(e.target.result);
-//         if (file.size > offset + e.target.result.byteLength) {
-//           window.setTimeout(sliceFile, 0, offset + chunkSize);
-//         }
-//         sendProgress.value = offset + e.target.result.byteLength;
-//       };
-//     })(file);
-//     var slice = file.slice(offset, offset + chunkSize);
-//     reader.readAsArrayBuffer(slice);
-//   };
-//   sliceFile(0);
+			};
+		};
+		sliceFile(0);
 
 
 
