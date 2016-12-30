@@ -12,5 +12,6 @@ npm install -g strongloop
 # run loopbackchat
 ```
 slc run
-http://0.0.0.0:3000/
 ```
+That start the server on: http://0.0.0.0:3000/
+
